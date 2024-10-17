@@ -6,7 +6,7 @@ from datetime import timedelta
 from decouple import config
 import environ
 import dj_database_url
-
+from django.core.exceptions import ImproperlyConfigured
 env = environ.Env()
 environ.Env.read_env()
 
@@ -22,8 +22,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG')
-
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS_DEPLOY')
+try:
+    ALLOWED_HOSTS = env.list('ALLOWED_HOSTS_DEPLOY', default=['*'])
+except ImproperlyConfigured:
+    ALLOWED_HOSTS = ['localhost', '.railway.app']
 
 
 # Application definition
