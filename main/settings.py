@@ -4,6 +4,11 @@ from pathlib import Path
 import os
 from datetime import timedelta
 from decouple import config
+import environ
+import dj_database_url
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,12 +18,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_%8lw&7*boloat(7z@97$iz!g0x_tn-_yfy22hqm_3d0ze-li8'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS_DEPLOY')
 
 
 # Application definition
@@ -74,16 +79,19 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': config('DB_NAME', default='allahoo'),
+#         'USER': config('DB_USER', default='root'),
+#         'PASSWORD': config('DB_PASSWORD', default='password'),
+#         'HOST': config('DB_HOST', default='localhost'),
+#         'PORT': config('DB_PORT', default='5432'),
+#     }
+# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('DB_NAME', default='allahoo'),
-        'USER': config('DB_USER', default='root'),
-        'PASSWORD': config('DB_PASSWORD', default='password'),
-        'HOST': config('DB_HOST', default='localhost'),
-        'PORT': config('DB_PORT', default='5432'),
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -127,11 +135,13 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser',
     ]
 }
-CORS_ALLOWED_ORIGINS = [
-    "https://portfolio-frontend-sage-nine.vercel.app",  # Add the origin of your frontend application
-]
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+# CORS_ALLOWED_ORIGINS = [
+#     "https://portfolio-frontend-sage-nine.vercel.app",  # Add the origin of your frontend application
+# ]
+CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS_DEPLOY')
+
+CORS_ALLOWED_WHITELIST = env.list('CORS_ALLOWED_WHITELIST_DEPLOY')
+
 AUTH_USER_MODEL = 'app.User'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -167,6 +177,7 @@ SIMPLE_JWT = {
 
 }
 
-CKEDITOR_UPLOAD_PATH = "uploads/"
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEPLOY')
 
+CKEDITOR_UPLOAD_PATH = "uploads/"
 PASSWORD_RESET_TIMEOUT = 900
