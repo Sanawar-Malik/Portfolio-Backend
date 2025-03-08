@@ -4,8 +4,16 @@ from pathlib import Path
 import os
 from datetime import timedelta
 from decouple import config
+<<<<<<< HEAD
 import dj_database_url
 
+=======
+import environ
+import dj_database_url
+from django.core.exceptions import ImproperlyConfigured
+env = environ.Env()
+environ.Env.read_env()
+>>>>>>> 46d866bc175d2a4a86c68e40121516f0a3eb87d7
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -15,9 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_%8lw&7*boloat(7z@97$iz!g0x_tn-_yfy22hqm_3d0ze-li8'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
 
 ALLOWED_HOSTS = ['*']  # Replace with your Vercel domain in production
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
@@ -90,6 +99,9 @@ WSGI_APPLICATION = 'main.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
 }
+# DATABASES = {
+#         'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+#     }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -133,11 +145,13 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser',
     ]
 }
-CORS_ALLOWED_ORIGINS = [
-    "https://portfolio-frontend-sage-nine.vercel.app",  # Add the origin of your frontend application
-]
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+# CORS_ALLOWED_ORIGINS = [
+#     "https://portfolio-frontend-sage-nine.vercel.app",  # Add the origin of your frontend application
+# ]
+CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS_DEPLOY')
+
+CORS_ALLOWED_WHITELIST = env.list('CORS_ALLOWED_WHITELIST_DEPLOY')
+
 AUTH_USER_MODEL = 'app.User'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -145,8 +159,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = config('EMAIL_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_PASS')
+EEMAIL_HOST_USER = config('EMAIL_USER', default='default_email@example.com')
+EMAIL_HOST_PASSWORD = config('EMAIL_PASS', default='default_password')
 EMAIL_USE_TLS = True
 
 REST_FRAMEWORK = {
@@ -173,6 +187,7 @@ SIMPLE_JWT = {
 
 }
 
-CKEDITOR_UPLOAD_PATH = "uploads/"
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEPLOY')
 
+CKEDITOR_UPLOAD_PATH = "uploads/"
 PASSWORD_RESET_TIMEOUT = 900
