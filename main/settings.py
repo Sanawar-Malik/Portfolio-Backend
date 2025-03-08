@@ -4,16 +4,13 @@ from pathlib import Path
 import os
 from datetime import timedelta
 from decouple import config
-<<<<<<< HEAD
 import dj_database_url
 
-=======
 import environ
 import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 env = environ.Env()
 environ.Env.read_env()
->>>>>>> 46d866bc175d2a4a86c68e40121516f0a3eb87d7
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
