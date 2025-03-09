@@ -96,9 +96,6 @@ WSGI_APPLICATION = 'main.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
 }
-# DATABASES = {
-#         'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-#     }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -167,10 +164,7 @@ CORS_ALLOW_HEADERS = [
     "x-csrftoken",
     "x-requested-with",
 ]
-# CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS_DEPLOY')
 
-# CORS_ALLOWED_WHITELIST = env.list('CORS_ALLOWED_WHITELIST_DEPLOY')
-# CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_WHITELIST_DEPLOY", default=["http://localhost:3000"])
 AUTH_USER_MODEL = 'app.User'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
