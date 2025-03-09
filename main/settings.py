@@ -140,7 +140,7 @@ REST_FRAMEWORK = {
     ]
 }
 CORS_ALLOWED_ORIGINS = [
-    "https://portfolio-frontend-pyav.vercel.app",  # Add the origin of your frontend application
+    "https://portfolio-frontend-pyav-kto5umn0o-maliks-projects-a5003d9a.vercel.app",  # Add the origin of your frontend application
 ]
 CORS_ALLOW_CREDENTIALS = True
 
