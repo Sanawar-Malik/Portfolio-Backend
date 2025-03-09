@@ -142,13 +142,13 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser',
     ]
 }
-# CORS_ALLOWED_ORIGINS = [
-#     "https://portfolio-frontend-sage-nine.vercel.app",  # Add the origin of your frontend application
-# ]
-CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS_DEPLOY')
+CORS_ALLOWED_ORIGINS = [
+    "https://portfolio-frontend-pyav.vercel.app/login",  # Add the origin of your frontend application
+]
+# CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS_DEPLOY')
 
-CORS_ALLOWED_WHITELIST = env.list('CORS_ALLOWED_WHITELIST_DEPLOY')
-CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_WHITELIST_DEPLOY", default=["http://localhost:3000"])
+# CORS_ALLOWED_WHITELIST = env.list('CORS_ALLOWED_WHITELIST_DEPLOY')
+# CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_WHITELIST_DEPLOY", default=["http://localhost:3000"])
 AUTH_USER_MODEL = 'app.User'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
