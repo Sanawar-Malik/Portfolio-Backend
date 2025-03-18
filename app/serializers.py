@@ -4,7 +4,7 @@ from rest_framework.serializers import ValidationError
 from django.utils.encoding import smart_str, force_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-
+from cloudinary.utils import cloudinary_url
 
 class DummyModel:
     # Define an empty model that doesn't exist in your database.
@@ -21,6 +21,12 @@ class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
         fields = '__all__'
+    
+    def get_image_url(self, obj):
+        if obj.image:
+            url, options = cloudinary_url(obj.image.name)
+            return url
+        return None
 
 
 class ExperienceSerializer(serializers.ModelSerializer):
