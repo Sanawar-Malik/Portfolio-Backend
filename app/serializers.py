@@ -5,7 +5,6 @@ from django.utils.encoding import smart_str, force_bytes, DjangoUnicodeDecodeErr
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from cloudinary.utils import cloudinary_url
-
 class DummyModel:
     # Define an empty model that doesn't exist in your database.
     pass

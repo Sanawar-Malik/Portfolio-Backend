@@ -1,4 +1,7 @@
 /env
 config.py
+<<<<<<< HEAD
 /images
+=======
+>>>>>>> eb9982e9371648eae492f82867e5279269be4f24
 .env

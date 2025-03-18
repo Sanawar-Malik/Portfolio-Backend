@@ -9,9 +9,11 @@ import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 import cloudinary
 import cloudinary_storage
+import dj_database_url
 
-
-
+import environ
+import dj_database_url
+from django.core.exceptions import ImproperlyConfigured
 env = environ.Env()
 environ.Env.read_env()
 
@@ -32,6 +34,9 @@ try:
 except ImproperlyConfigured:
     ALLOWED_HOSTS = ['localhost', '.railway.app']
 
+
+ALLOWED_HOSTS = ['*']  # Replace with your Vercel domain in production
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Application definition
 
@@ -58,6 +63,14 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+]
+
+MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -102,6 +115,10 @@ DATABASES = {
         'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
 
+DATABASES = {
+    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
+}
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -112,7 +129,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
-    {
+   {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
@@ -160,6 +177,32 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS_DEPLOY')
 
 CORS_ALLOWED_WHITELIST = env.list('CORS_ALLOWED_WHITELIST_DEPLOY')
+CORS_ALLOWED_ORIGINS = [
+    "https://portfolio-frontend-pyav.vercel.app",  # Production
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
 
 AUTH_USER_MODEL = 'app.User'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -197,6 +240,7 @@ SIMPLE_JWT = {
 }
 
 CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEPLOY')
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEPLOY', default=["https://*.railway.app"])
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
 PASSWORD_RESET_TIMEOUT = 900
