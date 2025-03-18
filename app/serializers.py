@@ -14,6 +14,11 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = '__all__'
+    def get_image_url(self, obj):
+        if obj.image:
+            url, options = cloudinary_url(obj.image.name)
+            return url
+        return None
 
 
 class ServiceSerializer(serializers.ModelSerializer):
